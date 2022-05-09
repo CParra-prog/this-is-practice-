@@ -5,6 +5,7 @@
  */
 package bfsimplement;
 
+import java.util.ArrayDeque;
 /**
  *
  * @author Carlos
@@ -34,6 +35,15 @@ public class LinkedList {
             currentNode = currentNode.returnNode();
         }
         
+    }
+    public ArrayDeque<Node> getChildren() {
+        ArrayDeque<Node> children = new ArrayDeque<>();
+        Node temp = sentinel;
+        while(temp.returnNode() != null) {
+            children.add(temp.returnNode());
+            temp = temp.returnNode();
+        }
+        return children;
     }
     
     public void PrintNodes() {

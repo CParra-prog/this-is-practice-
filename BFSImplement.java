@@ -15,10 +15,14 @@ import java.util.Iterator;
  * @author Carlos
  */
 public class BFSImplement {
- 
+    
+    // static so i can use globally
+    static ArrayDeque<Node> notvisited = new ArrayDeque<>();
+    static ArrayDeque<Node> visited    = new ArrayDeque<>();
+    static LinkedList[] adj = null;
+    
     public static void main(String[] args) {
-        ArrayDeque notvisited = new ArrayDeque();
-        ArrayDeque visited    = new ArrayDeque();
+        
         // declare another queue for string parsing
         ArrayDeque <String> graphlines = new ArrayDeque<>(); 
         try{
@@ -40,7 +44,7 @@ public class BFSImplement {
         
         // NOW we know how big the queues have to be
         // so we create the array of linked lists
-        LinkedList[] adj = new LinkedList[notvisited.size()];
+        adj = new LinkedList[notvisited.size()];
         Iterator graphit = graphlines.iterator();
         
         int count = 0;
@@ -50,7 +54,6 @@ public class BFSImplement {
             String[] edges =((String)graphit.next()).split(" ");
             // initialize each linked list in the array
             // update the visited and not visited arrays
-            visited.add(notvisited.remove());
             adj[count] = new LinkedList();
             for(int i =0; i <edges.length;i++) {
                 if(edges[i].equals("1")) {
@@ -61,14 +64,45 @@ public class BFSImplement {
             }
             count+=1;
         }
-        for(int i=0; i< adj.length;i++) {
-            System.out.print("The nodes connected to "+(i+1)+" are: ");
-            adj[i].PrintNodes();
-            System.out.println("");
-        }
-//        
-//        Node[] visited = new []Node;
-//        Node[] notvisited = new []Node;
+        // the code below displays the graph using adjacency list
+//        for(int i=0; i< adj.length;i++) {
+//            System.out.print("The nodes connected to "+(i+1)+" are: ");
+//            adj[i].PrintNodes();
+//            System.out.println("");
+//        }
+
+
+// 
+//
+//              CALL BFS BELOW
+        BFS(5);
     }
     
+    public static void BFS(int s) {
+                
+//      below is the BFS tree display  
+        int count = 0;
+        ArrayDeque<Node> que = new ArrayDeque<>();
+        que.add(notvisited.remove());
+        while(!que.isEmpty()) {
+            if(que.peek().returnData()==s) {
+                System.out.println("We found the vaulue in the tree!");
+                break;
+            }
+            // add all the children of the node to the que
+            // if we been to this node before then we skip it
+            if(visited.contains(que.peek())) {
+                // do nothing
+            }
+            else {
+                // add all the children 
+                if(count < 5) {
+                    que.addAll(adj[count].getChildren());
+                    count+=1;    
+                }
+                System.out.println(que.size());
+                visited.add(que.remove());
+            }
+        }
+    }
 }
